@@ -31,7 +31,7 @@ export const setAuthUserData = (userId, email, login, isAuth) => {
 
 //THUNK - внутренняя ф-я, которая возвращает внешнюю ф-ю
 export const getAuthUserData = () => (dispatch) => {
-    authAPI.me()
+    return authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 let { id, login, email } = response.data.data;
