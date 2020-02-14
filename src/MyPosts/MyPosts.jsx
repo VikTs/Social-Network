@@ -25,27 +25,53 @@ const AddNewPostForm = (props) => {
 
 const AddNewPostRedux = reduxForm({ form: 'ProfileAddNewPostForm' })(AddNewPostForm)
 
-class MyPosts extends React.Component {
-
-  render() {
-    let postsElements = props.posts.map(p => (<Post name={p.name} likesCount={p.likesCount} />));
-    let onAddPost = (values) => {
-      props.addPost(values.newPostText);
-    }
-
-    return (
-      <div className={classes.postsBlock}>
-        <h3>My posts</h3>
-
-        <AddNewPostRedux onSubmit={onAddPost} />
-
-        <div className={classes.posts}>
-          {postsElements}
-        </div>
-      </div>
-
-    );
+//React.memo - hoc, который проверяет, стоит ли перерисовывать компонент
+const MyPosts = React.memo((props) => {
+  console.log('render')
+  let postsElements = props.posts.map(p => (<Post name={p.name} likesCount={p.likesCount} />));
+  let onAddPost = (values) => {
+    props.addPost(values.newPostText);
   }
-}
+  return (
+    <div className={classes.postsBlock}>
+      <h3>My posts</h3>
+      <AddNewPostRedux onSubmit={onAddPost} />
+      <div className={classes.posts}>
+        {postsElements}
+      </div>
+    </div>
+  );
+})
+
+
+// shouldComponentUpdate(nextProps, nextState) { //нужно ли отрисовать компоненту
+//   return nextProps != this.props || nextState != this.state
+// }
+//PureComponent использовать
+
+
+
+// class MyPosts extends React.PureComponent {
+//   render() {
+//     console.log('render')
+//     let postsElements = this.props.posts.map(p => (<Post name={p.name} likesCount={p.likesCount} />));
+//     let onAddPost = (values) => {
+//       this.props.addPost(values.newPostText);
+//     }
+
+//     return (
+//       <div className={classes.postsBlock}>
+//         <h3>My posts</h3>
+
+//         <AddNewPostRedux onSubmit={onAddPost} />
+
+//         <div className={classes.posts}>
+//           {postsElements}
+//         </div>
+//       </div>
+
+//     );
+//   }
+// }
 
 export default MyPosts;
