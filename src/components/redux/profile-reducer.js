@@ -87,25 +87,30 @@ export const deletePost = (postId) => {
 //thunk - ф-я, которая принимает dispatch и диспатчит мелкие action 
 //(до или после асинхронной операции или вообще без неё)
 
-export const getUserProfile = (userId) => (dispatch) => {
-    usersAPI.getProfile(userId).then(response => {
+export const getUserProfile = (userId) => async(dispatch) => {
+    const response = await usersAPI.getProfile(userId)
         dispatch(setUserProfile(response.data));
-    });
 }
 
 //thunk for status
-export const getUserStatus = (userId) => (dispatch) => {
-    profileAPI.getStatus(userId).then(response => {
+export const getUserStatus = (userId) => async (dispatch) => {
+    const response = await profileAPI.getStatus(userId)
         dispatch(setStatus(response.data));
-    });
 }
 
-export const updateUserStatus = (status) => (dispatch) => {
-    profileAPI.updateStatus(status).then(response => {
+export const updateUserStatus = (status) => async (dispatch) => {
+    let response = await profileAPI.updateStatus(status)
         if (response.data.resultCode === 0) { //из документации (если =1 - ошибка, =0 - все ок)
             dispatch(setStatus(status));
         }
-    });
 }
 
 export default profileReducer
+
+
+
+
+
+
+
+
