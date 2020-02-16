@@ -2,14 +2,10 @@ import React from 'react';
 import './App.css';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Navbar from './components/Navbar/Navbar';
-import ProfileContainer from './components/Profile/ProfileContainer';
 import { Route, withRouter } from 'react-router-dom'
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Music from './components/Music/Music';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
-import UsersContainer from './components/Users/UsersContainer';
-import LoginPage from './components/Login/Login';
 import { initializeApp } from './components/redux/app-reducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -17,6 +13,13 @@ import Preloader from './components/common/Preloader/Preloader';
 import store from '../src/components/redux/redux-store'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { withSuspense } from './hoc/withSuspense';
+
+//lazy-подгружаем компоненту в момент перехода по вкладке
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
+const LoginPage = React.lazy(() => import('./components/Login/Login'));
 
 class App extends React.Component {
 
@@ -36,11 +39,11 @@ class App extends React.Component {
         <Navbar />
         <div className="app-wrapper-content">
 
-          <Route path='/profiles/:userId?' render={() => <ProfileContainer />} />
-          <Route path='/dialogs' render={() => <DialogsContainer />} />
-          <Route path='/users' render={() => <UsersContainer />} />
-          <Route path='/login' render={() => <LoginPage />} />
-
+          <Route path='/profiles/:userId?' render={withSuspense(ProfileContainer)} />
+          <Route path='/dialogs'  render={withSuspense(DialogsContainer)}/> 
+          <Route path='/users' render={withSuspense(UsersContainer)} />
+          <Route path='/login' render={withSuspense(LoginPage)} />
+          
           <Route path='/news' component={News} />
           <Route path='/music' component={Music} />
           <Route path='/settings' component={Settings} />
