@@ -10,10 +10,13 @@ import Music from './components/Music/Music';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import LoginPage from './components/Login/Login';
-import {initializeApp} from './components/redux/app-reducer'
+import { initializeApp } from './components/redux/app-reducer'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Preloader from './components/common/Preloader/Preloader';
+import store from '../src/components/redux/redux-store'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
 class App extends React.Component {
 
@@ -23,7 +26,7 @@ class App extends React.Component {
 
   render() {
 
-    if(!this.props.initialized){
+    if (!this.props.initialized) {
       return <Preloader />
     }
 
@@ -49,9 +52,20 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   initialized: state.app.initialized
-} )
+})
 
-export default compose(
+const AppContainer = compose(
   withRouter, //withRouter - так как коннектим App компонент, сбиваются Route
-  connect (mapStateToProps, { initializeApp })) (App); 
+  connect(mapStateToProps, { initializeApp }))(App);
 
+const SocialApp = (props) => {
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </BrowserRouter >
+  )
+}
+
+export default SocialApp
