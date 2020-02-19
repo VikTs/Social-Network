@@ -37,6 +37,17 @@ export const profileAPI = {
     updateStatus(status) {
         return instance.put(`profile/status`, { status: status });
         //в put вторым свойством передаем json-объект, его тип смотрим в документации
+    },
+    savePhoto(photoFile) {
+        const formData = new FormData();
+        formData.append("image", photoFile) //image - из документации
+
+        return instance.put(`profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        //в put вторым свойством передаем json-объект, его тип смотрим в документации
     }
 }
 
@@ -54,7 +65,7 @@ export const authAPI = {
         //данные - через запятую
         return instance.post(`auth/login`, { email, password, rememberMe })
     },
-    logout() { 
+    logout() {
         return instance.delete(`auth/login`) //отправляем delete запрос на тот же endpoint
     }
 

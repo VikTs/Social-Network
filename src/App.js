@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Navbar from './components/Navbar/Navbar';
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter, HashRouter } from 'react-router-dom'
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
 import Music from './components/Music/Music';
@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Preloader from './components/common/Preloader/Preloader';
 import store from '../src/components/redux/redux-store'
-import { BrowserRouter } from 'react-router-dom'
+// import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { withSuspense } from './hoc/withSuspense';
 
@@ -28,10 +28,10 @@ class App extends React.Component {
   }
 
   render() {
-
-    if (!this.props.initialized) {
-      return <Preloader />
-    }
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // if (!this.props.initialized) {
+    //   return <Preloader />
+    // }
 
     return (
       <div className="app-wrapper">
@@ -63,11 +63,14 @@ const AppContainer = compose(
 
 const SocialApp = (props) => {
   return (
-    <BrowserRouter>
+    //<BrowserRouter basename={process.env.PUBLIC_URL}>
+    //process.env.PUBLIC_URL - берет данные для среды, в которой запускается проект,
+    //в данном случае нужен, чтобы в гитхабе не затирался URL
+    <HashRouter>
       <Provider store={store}>
         <AppContainer />
       </Provider>
-    </BrowserRouter >
+    </HashRouter >
   )
 }
 
