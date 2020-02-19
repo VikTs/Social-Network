@@ -61,9 +61,9 @@ export const authAPI = {
     // в auth/login есть post и delete
     //мы создаем новую сессию
     //auth/login - из документации
-    login(email, password, rememberMe = false) { //email,password - required
+    login(email, password, rememberMe = false, captcha = null) { //email,password - required
         //данные - через запятую
-        return instance.post(`auth/login`, { email, password, rememberMe })
+        return instance.post(`auth/login`, { email, password, rememberMe, captcha })
     },
     logout() {
         return instance.delete(`auth/login`) //отправляем delete запрос на тот же endpoint
@@ -71,9 +71,17 @@ export const authAPI = {
 
 }
 
+//captcha
+export const securityAPI = {
+    getCaptchaUrl() {
+        return instance.get(`security/get-captcha-url`) 
+    }
 
-//???
-export const getUsers2 = (currentPage = 1, pageSize = 10) => {
-    return instance.get(`follow?page=${currentPage}&count=${pageSize}`)
-        .then(response => { return response.data });
 }
+
+
+// //???
+// export const getUsers2 = (currentPage = 1, pageSize = 10) => {
+//     return instance.get(`follow?page=${currentPage}&count=${pageSize}`)
+//         .then(response => { return response.data });
+// }
